@@ -1,0 +1,115 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #ececec;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+header nav {
+  padding: 20px;
+  height: 80px;
+
+  ul {
+    display: flex;
+    align-items: center;
+
+    li {
+      margin-right: 40px;
+      list-style: none;
+
+      a {
+        text-decoration: none;
+        color: #000;
+      }
+    }
+  }
+}
+
+h1 {
+    padding-top: 40px;
+}
+
+.tarefas-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+
+  .tarefa {
+    width: 500px;
+    padding: 20px;
+    margin-top: 20px;
+    background: #ffffff81;
+    border-radius: 16px;
+    transition: box-shadow 0.3s ease;
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    p {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: #555;
+    }
+  }
+}
+
+/*Nova tarefa*/
+.form-tarefa {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+
+    .form-control-titulo{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 20px;
+
+        input{
+            padding: 6px;
+        }
+
+        label {
+            font-size: 18px;
+            padding: 10px;
+        }
+    }
+
+    .form-control-status {
+        padding-bottom: 40px;
+
+        input{
+            padding: 6px;
+        }
+
+        label {
+            font-size: 18px;
+            padding: 10px;
+        }
+    }
+
+    .bnt-tarefa {
+        padding: 20px 8px;
+        background-color: green;
+        border: none;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 1em;
+        cursor: pointer;
+    }
+}
+
+
+

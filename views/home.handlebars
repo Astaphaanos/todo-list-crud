@@ -1,0 +1,20 @@
+
+<h1>Todo List</h1>
+<div class="tarefas-container">
+    
+    {{#each tarefa}}
+
+    <div class="tarefa">
+        <h3>{{titulo}}</h3>
+
+        <p class="status">Status: 
+            {{#if concluida}}
+            Concluída
+            {{else}}
+            Pendente
+            {{/if}}
+        </p>
+
+    </div>
+    {{/each}}
+</div>
