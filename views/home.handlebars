@@ -3,8 +3,8 @@
 <div class="tarefas-container">
     
     {{#each tarefa}}
-
     <div class="tarefa">
+
         <h3>{{titulo}}</h3>
 
         <p class="status">Status: 
@@ -15,6 +15,17 @@
             {{/if}}
         </p>
 
+        <div class="bnt-tarefa">
+            <button class="editar-btn">
+                <a href="/editartarefa/{{id}}">✏️ Editar</a>
+            </button>
+
+            <form action="/deletar/{{id}}" method="POST">
+                <button class="deletar-btn" style="background-color: red; color: #fff">
+                    🗑 Excluir
+                </button>
+            </form>
+        </div>
     </div>
     {{/each}}
 </div>

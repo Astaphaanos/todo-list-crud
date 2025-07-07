@@ -1,0 +1,11 @@
+
+<h1>Edite sua tarefa: </h1>
+<form class="form-tarefa" action="/editartarefa/atualizartarefa" method="post">
+<input type="hidden" name="id" value="{{tarefa.id}}">
+            
+    <div class="form-control-titulo">
+        <label for="titulo">Título: </label>
+        <input type="text" name="titulo" placeholder="Digite sua tarefa" value="{{tarefa.titulo}}">
+    </div>
+    <input type="submit" value="Atualizar" class="bnt-tarefa">
+</form>

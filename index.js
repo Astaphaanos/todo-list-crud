@@ -1,7 +1,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
-const mysql = require('mysql2')
-require('dotenv').config()
+const conn = require('./db/conn')
+
 
 const app = express()
 
@@ -20,7 +20,7 @@ app.use(express.json())
 //arquivo estático
 app.use(express.static('public'))
 
-//homepage
+//* Home
 app.get('/', (req,res) => {
     const query = "SELECT * FROM tarefas"
 
@@ -37,17 +37,16 @@ app.get('/', (req,res) => {
     })
 })
 
+//* Renderizar a novatarefa
 app.get('/novatarefa', (req,res) => {
     res.render('novatarefa')
 })
 
-//post da novatarefa
+//* INSERT (nova tarefa)
 app.post('/novatarefa/inserttarefa', (req,res) => {
     const titulo = req.body.titulo
 
-    const checkbox = req.body.concluida ? 1 : 0;
-
-    const query = `INSERT INTO tarefas (titulo, checkbox) VALUES ('${titulo}', '${checkbox}')`
+    const query = `INSERT INTO tarefas (titulo, checkbox) VALUES ('${titulo}')`
 
     conn.query(query, function(err) {
          if(err) { 
@@ -58,20 +57,55 @@ app.post('/novatarefa/inserttarefa', (req,res) => {
     })
 })
 
-// conexão com database
-const conn = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER, 
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+//* Pegando o id para fazer o UPDATE
+app.get('/editartarefa/:id', (req,res) => {
+    const id = req.params.id
+
+    const query = `SELECT * FROM tarefas WHERE id = ${id}`
+
+    conn.query(query, function(err,data) {
+         if(err) { 
+        console.log(err)
+        return
+        }
+
+       const tarefa = data[0]
+        res.render('editartarefa', {tarefa})
+    })
 })
 
-conn.connect(function(err) {
-    if(err) {
-        console.log('Erro na conexão com o MySQL:', err.message)
-    }
+//* UPDATE
+app.post('/editartarefa/atualizartarefa', (req,res) => {
+    const id = req.body.id
+    const titulo = req.body.titulo
 
-    console.log('Conectou ao MySQL')
-    app.listen(3000)
+    const query = `UPDATE tarefas SET titulo = '${titulo}'  WHERE id = ${id}`
+
+    conn.query(query, function(err){
+        if(err) {
+            console.log(err)
+            return
+        }
+
+        res.redirect('/')
+    })
 })
 
+//* DELETE
+app.post('/deletar/:id', (req,res) => {
+    const id = req.params.id
+
+    const query = `DELETE FROM tarefas WHERE id = ${id}`
+
+    conn.query(query, function(err) {
+        if(err) {
+            console.log(err)
+            return
+        }
+
+        res.redirect('/')
+    })
+})
+
+
+app.listen(3000)
