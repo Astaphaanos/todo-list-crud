@@ -1,31 +1,34 @@
-
 <h1>Todo List</h1>
+
 <div class="tarefas-container">
-    
-    {{#each tarefa}}
-    <div class="tarefa">
+  {{#each tarefa}}
+    <div class="tarefa {{#if checkbox}}concluida{{/if}}" data-id="{{id}}">
+      
+      <h3 class="titulo">{{titulo}}</h3>
 
-        <h3>{{titulo}}</h3>
 
-        <p class="status">Status: 
-            {{#if concluida}}
-            Concluída
-            {{else}}
-            Pendente
-            {{/if}}
-        </p>
+      <p>Status: <span class="status-text">
+        {{#if checkbox}}Concluída{{else}}Pendente{{/if}}
+      </span></p>
 
-        <div class="bnt-tarefa">
-            <button class="editar-btn">
-                <a href="/editartarefa/{{id}}">✏️ Editar</a>
-            </button>
+      {{#unless checkbox}}
+        <button class="btn-concluir" data-id="{{id}}">✅ Concluir</button>
+      {{/unless}}
 
-            <form action="/deletar/{{id}}" method="POST">
-                <button class="deletar-btn" style="background-color: red; color: #fff">
-                    🗑 Excluir
-                </button>
-            </form>
-        </div>
+      <div class="bnt-tarefa">
+
+        <button class="editar-btn">
+          <a href="/editartarefa/{{id}}">✏️ Editar</a>
+        </button>
+
+        <form action="/deletar/{{id}}" method="POST" style="display:inline;">
+          <button class="deletar-btn" style="background-color: red; color: #fff;">
+            🗑 Excluir
+          </button>
+        </form>
+      </div>
+
     </div>
-    {{/each}}
+  {{/each}}
 </div>
+

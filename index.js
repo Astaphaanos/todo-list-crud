@@ -20,23 +20,6 @@ app.use(express.json())
 //arquivo estático
 app.use(express.static('public'))
 
-//* Home
-app.get('/', (req,res) => {
-    const query = "SELECT * FROM tarefas"
-
-    conn.query(query, function(err, data) {
-        if(err) {
-            console.log(err)
-            return
-        }
-
-        const tarefa = data
-        console.log(tarefa)
-
-        res.render('home', {tarefa})
-    })
-})
-
 //* Renderizar a novatarefa
 app.get('/novatarefa', (req,res) => {
     res.render('novatarefa')
@@ -45,10 +28,12 @@ app.get('/novatarefa', (req,res) => {
 //* INSERT (nova tarefa)
 app.post('/novatarefa/inserttarefa', (req,res) => {
     const titulo = req.body.titulo
+    const checkbox = req.body.concluida ? 1 : 0
 
-    const query = `INSERT INTO tarefas (titulo, checkbox) VALUES ('${titulo}')`
+    const query = `INSERT INTO tarefas (titulo, checkbox) VALUES (?, ?)`
+    const data = [titulo, checkbox]
 
-    conn.query(query, function(err) {
+    conn.query(query, data, function(err) {
          if(err) { 
         console.log(err)
         return
@@ -61,9 +46,10 @@ app.post('/novatarefa/inserttarefa', (req,res) => {
 app.get('/editartarefa/:id', (req,res) => {
     const id = req.params.id
 
-    const query = `SELECT * FROM tarefas WHERE id = ${id}`
+    const query = `SELECT * FROM tarefas WHERE id = ?`
+    const data = [id]
 
-    conn.query(query, function(err,data) {
+    conn.query(query, data, function(err,data) {
          if(err) { 
         console.log(err)
         return
@@ -79,9 +65,10 @@ app.post('/editartarefa/atualizartarefa', (req,res) => {
     const id = req.body.id
     const titulo = req.body.titulo
 
-    const query = `UPDATE tarefas SET titulo = '${titulo}'  WHERE id = ${id}`
+    const query = `UPDATE tarefas SET titulo = ?  WHERE id = ?`
+    const data = [titulo, id]
 
-    conn.query(query, function(err){
+    conn.query(query, data, function(err){
         if(err) {
             console.log(err)
             return
@@ -95,9 +82,10 @@ app.post('/editartarefa/atualizartarefa', (req,res) => {
 app.post('/deletar/:id', (req,res) => {
     const id = req.params.id
 
-    const query = `DELETE FROM tarefas WHERE id = ${id}`
+    const query = `DELETE FROM tarefas WHERE id =  ?`
+    const data = [id]
 
-    conn.query(query, function(err) {
+    conn.query(query, data, function(err) {
         if(err) {
             console.log(err)
             return
@@ -107,5 +95,34 @@ app.post('/deletar/:id', (req,res) => {
     })
 })
 
+//* Concluir tarefa
+app.post('/concluir/:id', (req, res) => {
+  const id = req.params.id
+  const query = 'UPDATE tarefas SET checkbox = ? WHERE id = ?'
+  const data = [1, id]
+
+  conn.query(query, data, (err) => {
+    if (err) {
+      console.log(err)
+      return res.status(500).json({ success: false })
+    }
+
+    res.status(200).json({ success: true })
+  })
+})
+
+app.get('/', (req, res) => {
+  const query = 'SELECT * FROM tarefas ORDER BY checkbox ASC, id DESC'
+
+  conn.query(query, (err, data) => {
+    if (err) {
+      console.log(err)
+      return
+    }
+
+    const tarefa = data
+    res.render('home', { tarefa })
+  })
+})
 
 app.listen(3000)

@@ -142,3 +142,45 @@ h1 {
         cursor: pointer;
     }
 }
+
+/*Botão de concluir a tarefa*/
+  .btn-concluir{
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    background-color: #56D08A;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/*Visual quando concluir a tarefa*/
+.tarefa {
+  background-color: #f4f4f4;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.tarefa.concluida {
+  background-color: #dcdcdc;
+  opacity: 0.8;
+}
+
+.tarefa.concluida .titulo {
+  text-decoration: line-through;
+  color: #666;
+}
+
+.status-text {
+  font-weight: bold;
+}
+
+.bnt-tarefa {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
